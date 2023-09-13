@@ -11,13 +11,11 @@ app.use(express.json());
 // To get Books and Categories
 app.get('/books', async (req, res) => {
     const books = await prisma.Book.findMany();
-    console.log('Retrieved data from the "book" table:', books);
     res.json(books); 
 })
 
 app.get('/category', async (req, res) => {
     const category = await prisma.Category.findMany();
-    // console.log('Retrieved data from the "category" table:', category);
     res.json(category); 
 });
 
@@ -33,8 +31,6 @@ app.post('/books', async (req, res) => {
     res.json(newBook)
 });
 app.post('/category', async (req, res) => {
-      const { name } = req.body; 
-      // Create the category
       const newCategory = await prisma.Category.create({
         data: {
             id:req.body.id,
@@ -50,7 +46,7 @@ app.post('/category', async (req, res) => {
 app.patch("/books/:booksId",async (req,res)=>
   {
       const { booksId } = req.params;
-      const { name} = req.body;
+      const { title} = req.body;
       const updatedbooks = await prisma.book.update({
           where: { id: parseInt(booksId) },
           data: {
@@ -67,7 +63,7 @@ app.patch("/category/:categoryId",async (req,res)=>
       const updatedCategory = await prisma.category.update({
           where: { id: parseInt(categoryId) },
           data: {
-            name:req.body.name,
+            name:name,
           }
         })
         res.json(updatedCategory);
